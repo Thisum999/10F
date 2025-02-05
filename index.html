@@ -45,6 +45,7 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
+      font-weight: bold;
     }
     body {
       background: linear-gradient(135deg, var(--light-gray), #e9ecef);
@@ -87,7 +88,7 @@
     }
     #teacher-photo {
       width: 140px;
-      height: 169px;
+      height: 171.5px;
       border-radius: 5%;
       object-fit: cover;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -201,13 +202,6 @@
       margin-top: 1rem;
     }
     
-    .subject-marks .badge {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      color: var(--white);
-      font-weight: bold;
-    }
     .subject-details {
       display: flex;
       flex-direction: column;
@@ -253,6 +247,7 @@
       padding: 5px;
       border-radius: 5px;
       font-size: 0.8rem;
+      display: none; /* Initially hide the legend */
     }
     #legend div {
       display: flex;
@@ -268,8 +263,9 @@
 </head>
 <body>
   <header>
-    <h1>MCG Grade 10F - 2024 3rd Term Test E-Report</h1>
-    <p id="teacher">Class Teacher: Mr. Yasas Darshana</p>
+    <h1>MCG Grade 10f - 2024 3rd Term Test E-Report</h1>
+    <p id="teacher">Class Teacher: Mr. Yasas Darshana
+    </p>
   </header>
   <main>
     <section id="search-section">
@@ -282,11 +278,11 @@
           </button>
         </div>
         <div id="legend">
-          <div><span class="color-box" style="background-color: var(--success);"></span>A (75+)</div>
-          <div><span class="color-box" style="background-color: var(--warning);"></span>B (60-74)</div>
-          <div><span class="color-box" style="background-color: var(--info);"></span>C (45-59)</div>
-          <div><span class="color-box" style="background-color: var(--accent);"></span>W (35-44)</div>
-          <div><span class="color-box" style="background-color: var(--danger);"></span>S (Below 35)</div>
+          <div><span class="color-box" style="background-color: var(--success);"></span>A (75-100)</div>
+          <div><span class="color-box" style="background-color: var(--warning);"></span>B (65-74)</div>
+          <div><span class="color-box" style="background-color: var(--info);"></span>C (50-64)</div>
+          <div><span class="color-box" style="background-color: var(--accent);"></span>S (35-49)</div>
+          <div><span class="color-box" style="background-color: var(--danger);"></span>W (Below 35)</div>
         </div>
       </div>
     </section>
@@ -320,17 +316,17 @@
     </section>
   </main>
   <footer>
-    <p>Design By DBMS - Thisum Jalitha 2025 ©</p>
+    <p>Design By DBMS - Thisum,Nethindu,Rakmitha 2025 ©</p>
   </footer>
   <div id="rotate-message">
     <img src="https://i.ibb.co/mFTwkmd4/rotate-2313593.png" alt="Rotate Logo" id="rotate-logo">
-    Rotate phone for best view
-  </div> 
+    Rotate phone for best view 
+  </div>  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.1"></script>
   <script>
     const studentsData = {
- "6668": {
+    "6668": {
     "name": "N.D.NIHINDA SESITHA",
     "place": 38,
     "marks": [39, 41, 16, 9, 55, 48, 71, 49, 47],
@@ -591,7 +587,7 @@
 "9328": {
     "name": "M.H. RUSIRU VIHANGA",
     "place": 14,
-    "marks": [78, 97, 87, 82, 89, 87, 91, 59, 670],
+    "marks": [78, 97, 87, 82, 89, 87, 91, 59, 67],
     "subjects": ["Sinhala", "Religion", "Science", "Maths", "English", "History", "OPT 1", "OPT 2", "OPT 3"]
 },
 "9498": {
@@ -612,8 +608,7 @@
     "marks": [65, 80, 67, 53, 68, 66, 60, 35, 56],
     "subjects": ["Sinhala", "Religion", "Science", "Maths", "English", "History", "OPT 1", "OPT 2", "OPT 3"]
 }
-  // Add more student information here...
-};
+    };
 
     document.getElementById("search-btn").addEventListener("click", searchStudent);
     document.getElementById("admission-number").addEventListener("keypress", (e) => {
@@ -635,138 +630,140 @@
         updateGradeDistribution(student);
         updateSubjectDetails(student);
         document.getElementById("report-section").style.display = "block";
+        document.getElementById("legend").style.display = "block"; // Show the legend
       } else {
         alert("Student not found! Please check admission number.");
+        document.getElementById("legend").style.display = "none"; // Hide the legend if student not found
       }
     }
 
     function initChart(student) {
-          const ctx = document.getElementById('marks-chart').getContext('2d');
-          const isMobile = window.innerWidth <= 768;
+      const ctx = document.getElementById('marks-chart').getContext('2d');
+      const isMobile = window.innerWidth <= 768;
 
-          // Retrieve CSS variables properly
-          const styles = getComputedStyle(document.documentElement);
-          const successColor = styles.getPropertyValue('--success').trim();
-          const warningColor = styles.getPropertyValue('--warning').trim();
-          const infoColor = styles.getPropertyValue('--info').trim();
-          const accentColor = styles.getPropertyValue('--accent').trim();
-          const dangerColor = styles.getPropertyValue('--danger').trim();
+      // Retrieve CSS variables properly
+      const styles = getComputedStyle(document.documentElement);
+      const successColor = styles.getPropertyValue('--success').trim();
+      const warningColor = styles.getPropertyValue('--warning').trim();
+      const infoColor = styles.getPropertyValue('--info').trim();
+      const accentColor = styles.getPropertyValue('--accent').trim();
+      const dangerColor = styles.getPropertyValue('--danger').trim();
 
-          if (window.myChart) window.myChart.destroy();
-          window.myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: student.subjects.map((subject, index) => `${subject} (${student.marks[index]})`),
-              datasets: [{
-                data: student.marks,
-                backgroundColor: student.marks.map(m => 
-                  m >= 75 ? successColor : 
-                  m >= 60 ? warningColor : 
-                  m >= 45 ? infoColor : 
-                  m >= 35 ? accentColor : dangerColor
-                ),
-                borderColor: '#2c3e50',
-                borderWidth: 2,
-                borderRadius: 5
-              }]
+      if (window.myChart) window.myChart.destroy();
+      window.myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: student.subjects.map((subject, index) => `${subject} (${student.marks[index]})`),
+          datasets: [{
+            data: student.marks,
+            backgroundColor: student.marks.map(m => 
+              m >= 75 ? successColor : 
+              m >= 65 ? warningColor : 
+              m >= 50 ? infoColor : 
+              m >= 35 ? accentColor : dangerColor
+            ),
+            borderColor: '#2c3e50',
+            borderWidth: 2,
+            borderRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              grid: { color: '#dfe6e9' },
+              ticks: { color: '#2c3e50', font: { size: isMobile ? 12 : 14 } }
             },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  max: 100,
-                  grid: { color: '#dfe6e9' },
-                  ticks: { color: '#2c3e50', font: { size: isMobile ? 12 : 14 } }
-                },
-                x: {
-                  grid: { display: false },
-                  ticks: {
-                    color: '#2c3e50',
-                    font: { size: isMobile ? 10 : 12 },
-                    autoSkip: false,
-                    maxRotation: isMobile ? 90 : 0,
-                    minRotation: isMobile ? 90 : 0
+            x: {
+              grid: { display: false },
+              ticks: {
+                color: '#2c3e50',
+                font: { size: isMobile ? 10 : 12 },
+                autoSkip: false,
+                maxRotation: isMobile ? 90 : 0,
+                minRotation: isMobile ? 90 : 0
+              }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            annotation: {
+              annotations: {
+                passLine: {
+                  type: 'line',
+                  yMin: 35,
+                  yMax: 35,
+                  borderColor: '#e74c3c',
+                  borderWidth: 3,
+                  borderDash: [5, 3],
+                  label: {
+                    content: 'Pass (35)',
+                    display: true,
+                    position: 'end',
+                    backgroundColor: '#e74c3c',
+                    color: 'white'
                   }
-                }
-              },
-              plugins: {
-                legend: { display: false },
-                annotation: {
-                  annotations: {
-                    passLine: {
-                      type: 'line',
-                      yMin: 35,
-                      yMax: 35,
-                      borderColor: '#e74c3c',
-                      borderWidth: 3,
-                      borderDash: [5, 3],
-                      label: {
-                        content: 'Pass (35)',
-                        display: true,
-                        position: 'end',
-                        backgroundColor: '#e74c3c',
-                        color: 'white'
-                      }
-                    },
-                    distinctionLine: {
-                      type: 'line',
-                      yMin: 75,
-                      yMax: 75,
-                      borderColor: '#FFD700',
-                      borderWidth: 3,
-                      borderDash: [5, 3],
-                      label: {
-                        content: 'Distinction (75)',
-                        display: true,
-                        position: 'end',
-                        backgroundColor: '#FFD700',
-                        color: '#2c3e50'
-                      }
-                    }
+                },
+                distinctionLine: {
+                  type: 'line',
+                  yMin: 75,
+                  yMax: 75,
+                  borderColor: '#FFD700',
+                  borderWidth: 3,
+                  borderDash: [5, 3],
+                  label: {
+                    content: 'Distinction (75)',
+                    display: true,
+                    position: 'end',
+                    backgroundColor: '#FFD700',
+                    color: '#2c3e50'
                   }
                 }
               }
             }
-          });
+          }
         }
+      });
+    }
 
-        function updateGradeDistribution(student) {
-          const gradeCounts = { A: 0, B: 0, C: 0, W: 0, S: 0 };
-          student.marks.forEach(mark => {
-            if (mark >= 75) gradeCounts.A++;
-            else if (mark >= 60) gradeCounts.B++;
-            else if (mark >= 45) gradeCounts.C++;
-            else if (mark >= 35) gradeCounts.W++;
-            else gradeCounts.S++;
-          });
-          const gradeDistributionDiv = document.getElementById("grade-distribution");
-          gradeDistributionDiv.innerHTML = `
-            ${gradeCounts.A > 0 ? `<span class="badge success">A: ${gradeCounts.A}</span>` : ''}
-            ${gradeCounts.B > 0 ? `<span class="badge warning">B: ${gradeCounts.B}</span>` : ''}
-            ${gradeCounts.C > 0 ? `<span class="badge info">C: ${gradeCounts.C}</span>` : ''}
-            ${gradeCounts.W > 0 ? `<span class="badge accent">W: ${gradeCounts.W}</span>` : ''}
-            ${gradeCounts.S > 0 ? `<span class="badge danger">S: ${gradeCounts.S}</span>` : ''}
-          `;
-        }
+    function updateGradeDistribution(student) {
+      const gradeCounts = { A: 0, B: 0, C: 0, S: 0, W: 0 };
+      student.marks.forEach(mark => {
+        if (mark >= 75) gradeCounts.A++;
+        else if (mark >= 65) gradeCounts.B++;
+        else if (mark >= 50) gradeCounts.C++;
+        else if (mark >= 35) gradeCounts.S++;
+        else gradeCounts.W++;
+      });
+      const gradeDistributionDiv = document.getElementById("grade-distribution");
+      gradeDistributionDiv.innerHTML = `
+        ${gradeCounts.A > 0 ? `<span class="badge success">A: ${gradeCounts.A}</span>` : ''}
+        ${gradeCounts.B > 0 ? `<span class="badge warning">B: ${gradeCounts.B}</span>` : ''}
+        ${gradeCounts.C > 0 ? `<span class="badge info">C: ${gradeCounts.C}</span>` : ''}
+        ${gradeCounts.S > 0 ? `<span class="badge accent">S: ${gradeCounts.S}</span>` : ''}
+        ${gradeCounts.W > 0 ? `<span class="badge danger">W: ${gradeCounts.W}</span>` : ''}
+      `;
+    }
 
-        function updateSubjectDetails(student) {
-          const subjectDetailsDiv = document.getElementById("subject-details");
-          subjectDetailsDiv.innerHTML = "";
-          student.marks.forEach((mark, index) => {
-            let badgeClass = '';
-            if (mark >= 75) badgeClass = 'success';
-            else if (mark >= 60) badgeClass = 'warning';
-            else if (mark >= 45) badgeClass = 'info';
-            else if (mark >= 35) badgeClass = 'accent';
-            else badgeClass = 'danger';
-            const subjectBadge = document.createElement("span");
-            subjectBadge.className = `badge ${badgeClass}`;
-            subjectBadge.textContent = `${student.subjects[index]}: ${mark}`;
-            subjectDetailsDiv.appendChild(subjectBadge);
-          });
-        }
-      </script>
-    </body>
+    function updateSubjectDetails(student) {
+      const subjectDetailsDiv = document.getElementById("subject-details");
+      subjectDetailsDiv.innerHTML = "";
+      student.marks.forEach((mark, index) => {
+        let badgeClass = '';
+        if (mark >= 75) badgeClass = 'success'; // A
+        else if (mark >= 65) badgeClass = 'warning'; // B
+        else if (mark >= 50) badgeClass = 'info'; // C
+        else if (mark >= 35) badgeClass = 'accent'; // S
+        else badgeClass = 'danger'; // W
+        const subjectBadge = document.createElement("span");
+        subjectBadge.className = `badge ${badgeClass}`;
+        subjectBadge.textContent = `${student.subjects[index]}: ${mark}`;
+        subjectDetailsDiv.appendChild(subjectBadge);
+      });
+    }
+  </script>
+</body>
 </html>
